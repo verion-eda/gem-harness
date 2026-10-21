@@ -1,0 +1,16 @@
+[package]
+description = "And-Inverter-Graph"
+name = "aig"
+license = "Apache-2.0"
+edition.workspace = true
+version = "0.1.0"
+
+[lints]
+workspace = true
+
+[dependencies]
+netlistdb.workspace = true
+sverilogparse.workspace = true
+tracing.workspace = true
+compact_str = "0.7.1"
+indexmap = { version = "2.4.0", features = ["rayon"] }

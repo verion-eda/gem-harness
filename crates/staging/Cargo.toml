@@ -1,0 +1,21 @@
+[package]
+description = "Staging AIG"
+name = "staging"
+license = "Apache-2.0"
+edition.workspace = true
+version = "0.1.0"
+
+[lints]
+workspace = true
+
+[dependencies]
+aig.workspace = true
+indexmap = { version = "2.4.0", features = ["rayon", "serde"] }
+serde = { version = "1.0.208", features = ["derive"] }
+
+[dev-dependencies]
+netlistdb.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+insta = "1"
+serde_bare = "0.5.0"

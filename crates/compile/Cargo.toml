@@ -1,0 +1,25 @@
+[package]
+description = "Compile ..."
+edition.workspace = true
+name = "compile"
+license = "Apache-2.0"
+version = "0.0.1"
+
+[lints]
+workspace = true
+
+[[bin]]
+name = "compile"
+path = "src/main.rs"
+
+[dependencies]
+aig.workspace = true
+clap.workspace = true
+flatten.workspace = true
+netlistdb.workspace = true
+repcut.workspace = true
+staging.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+rayon = "1.10.0"
+serde_bare = "0.5.0"

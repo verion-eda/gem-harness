@@ -1,0 +1,32 @@
+[package]
+description = "Gem Non-Interactive Simulator"
+edition.workspace = true
+name = "gem-simulator"
+license = "Apache-2.0"
+version = "0.0.1"
+
+[features]
+cuda = ["ulib/cuda", "gem-cuda/cuda"]
+
+[lints]
+workspace = true
+
+[[bin]]
+name = "gem-simulator"
+path = "src/main.rs"
+required-features = ["cuda"]
+
+[dependencies]
+aig.workspace = true
+flatten.workspace = true
+gem-cuda.workspace = true
+netlistdb.workspace = true
+staging.workspace = true
+sverilogparse.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+ulib.workspace = true
+vcd-ng.workspace = true
+clap = { version = "4.5.15", features = ["derive"] }
+compact_str = "0.7.1"
+serde_bare = "0.5.0"

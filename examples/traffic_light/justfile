@@ -1,0 +1,23 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Verion GmbH
+# SPDX-License-Identifier: Apache-2.0
+import '../common.just'
+
+root      := justfile_directory() / "../.."
+build_dir := justfile_directory() / "build"
+gatelevel := build_dir / "gatelevel.gv"
+gemparts  := build_dir / "result.gemparts"
+
+default: all
+
+synth:
+    mkdir -p {{build_dir}}
+    cd {{justfile_directory()}} && yosys -p "tcl scripts/synthesise.tcl traffic_light.sv {{gatelevel}} traffic_light_top {{root}}/aigpdk"
+
+comp: (compile root gatelevel gemparts)
+
+sim: (run-testbench root "traffic_light_testbench")
+
+all: synth comp sim
+
+clean:
+    rm -rf {{build_dir}}

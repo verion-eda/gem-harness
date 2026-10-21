@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Verion GmbH
+# SPDX-License-Identifier: Apache-2.0
+root      := justfile_directory() / "../.."
+adder_dir := justfile_directory() / "../../examples/adder"
+
+default: all
+
+sim:
+    cd {{adder_dir}} && just --justfile "justfile" comp
+    cd {{root}} && uv run examples/python/example.py
+
+all: sim
+
+clean:

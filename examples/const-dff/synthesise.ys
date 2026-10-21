@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Verion GmbH
+# SPDX-License-Identifier: Apache-2.0
+read_verilog examples/const-dff/const_dff.sv
+hierarchy -check -top const_dff
+proc;;
+opt_expr; opt_dff; opt_clean
+
+synth -flatten
+delete t:$print
+
+dfflibmap -liberty aigpdk/aigpdk_nomem.lib
+opt_clean -purge
+abc -liberty aigpdk/aigpdk_nomem.lib
+opt_clean -purge
+abc -liberty aigpdk/aigpdk_nomem.lib
+opt_clean -purge
+write_verilog examples/const-dff/build/gatelevel.gv

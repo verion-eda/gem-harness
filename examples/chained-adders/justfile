@@ -1,0 +1,27 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Verion GmbH
+# SPDX-License-Identifier: Apache-2.0
+import '../common.just'
+
+root      := justfile_directory() / "../.."
+build_dir := justfile_directory() / "build"
+gatelevel := build_dir / "gatelevel.gv"
+gemparts  := build_dir / "result.gemparts"
+
+default: all
+
+synth:
+    mkdir -p {{build_dir}}
+    cd {{justfile_directory()}} && \
+        INPUT_FILE={{justfile_directory()}}/chained_adders.sv \
+        OUTPUT_FILE={{gatelevel}} \
+        LIBERTY={{root}}/aigpdk/aigpdk_nomem.lib \
+        yosys -c scripts/synthesise.tcl
+
+comp: (compile root gatelevel gemparts "--level-split 2")
+
+sim: (run-testbench root "chained_adders_testbench")
+
+all: synth comp sim
+
+clean:
+    rm -rf {{build_dir}}

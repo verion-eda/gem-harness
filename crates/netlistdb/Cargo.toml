@@ -1,0 +1,30 @@
+[package]
+name = "netlistdb"
+license = "Apache-2.0"
+version = "0.4.8"
+edition = "2024"
+description = "Heterogeneous VLSI circuit netlist database with support for vector nets, hierarchical modules, assignments, etc."
+authors = ["Zizheng Guo <gzz_2000@126.com>"]
+links = "netlistdb"
+
+[lints]
+workspace = true
+
+[dependencies]
+sverilogparse.workspace = true
+tracing.workspace = true
+scopeguard = "1.1.0"
+readonly = "0.2.2"
+either = "1.8.0"
+bytemuck = { version = "1.25.0", features = ["derive"] }
+ulib = { version = "0.3.13", features = ["rayon"], path = "../ulib" }
+compact_str = "0.7.1"
+rayon = "1.7.0"
+dyn-iter = "1.0.1"
+itertools = "0.10.3"
+
+[dev-dependencies]
+tracing-subscriber.workspace = true
+
+[build-dependencies]
+ucc.workspace = true

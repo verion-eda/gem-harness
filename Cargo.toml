@@ -1,0 +1,149 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/aig",
+    "crates/flatten",
+    "crates/gem-cuda",
+    "crates/gem-simulator",
+    "crates/staging",
+    "crates/repcut",
+    "crates/compile",
+    "crates/simulator",
+]
+default-members = ["crates/gem-simulator", "crates/compile", "crates/simulator"]
+package.edition = "2024"
+
+[workspace.dependencies]
+aig = { path = "crates/aig" }
+flatten = { path = "crates/flatten" }
+gem-cuda = { path = "crates/gem-cuda" }
+repcut = { path = "crates/repcut" }
+staging = { path = "crates/staging" }
+netlistdb = { version = "0.4.6", path = "crates/netlistdb" }
+sverilogparse = { version = "0.4.2", git = "https://github.com/verion-eda/sverilogparse.git" }
+ucc = { version = "0.2.5", path = "crates/ucc" }
+ulib = { version = "0.3.13", path = "crates/ulib" }
+vcd-ng = { version = "0.2.0", path = "crates/vcd-ng" }
+anyhow = "1.0"
+clap = { version = "4.5.15", features = ["derive"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[workspace.lints.rust]
+unexpected_cfgs = { level = "allow" }
+
+[workspace.lints.clippy]
+declare_interior_mutable_const = "deny"
+redundant_clone = "deny"
+disallowed_methods = "deny"
+# Individual rules that have violations in the codebase:
+type_complexity = "allow"
+single_range_in_vec_init = "allow"
+too_many_arguments = "allow"
+large_enum_variant = "allow"
+nonminimal_bool = "allow"
+undocumented_unsafe_blocks = "deny"
+
+[package]
+name = "examples"
+license = "Apache-2.0"
+version = "0.0.1"
+edition.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+aig.workspace = true
+clap.workspace = true
+flatten.workspace = true
+gem-cuda.workspace = true
+netlistdb.workspace = true
+staging.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+vcd-ng.workspace = true
+cust_raw = "*"
+simulator = { version = "0.0.1", path = "crates/simulator" }
+# other
+indexmap = { version = "2.4.0", features = ["rayon"] }
+num-traits = "0.2"
+serde_bare = "0.5.0"
+
+[lints]
+workspace = true
+
+[features]
+cuda = ["simulator/cuda"]
+unified-memory = ["simulator/unified-memory"]
+
+# Real working example - adder testbench
+[[bin]]
+name = "adder_testbench"
+path = "examples/adder/adder_testbench.rs"
+required-features = ["cuda"]
+
+# Adder testbench with named signal access
+[[bin]]
+name = "adder_testbench_named"
+path = "examples/adder/adder_testbench_named.rs"
+required-features = ["cuda"]
+
+# Trace signal chain for debugging signal mapping
+[[bin]]
+name = "trace_signal_chain"
+path = "examples/adder/trace_signal_chain.rs"
+required-features = ["cuda"]
+
+[[bin]]
+name = "alu_testbench"
+path = "examples/alu/scripts/alu_testbench.rs"
+required-features = ["cuda"]
+
+[[bin]]
+name = "chained_adders_testbench"
+path = "examples/chained-adders/chained_adders_testbench.rs"
+required-features = ["cuda"]
+
+[[bin]]
+name = "adders_parallel_testbench"
+path = "examples/adders_parallel/adders_parallel_testbench.rs"
+required-features = ["cuda"]
+
+[[bin]]
+name = "const_dff"
+path = "examples/const-dff/const_dff.rs"
+required-features = ["cuda"]
+
+[[bin]]
+name = "traffic_light_testbench"
+path = "examples/traffic_light/traffic_light_testbench.rs"
+required-features = ["cuda"]
+
+[[bin]]
+name = "dpi_counter_testbench"
+path = "examples/dpi/scripts/dpi_counter_testbench.rs"
+
+[[bin]]
+name = "dpi_dup_testbench"
+path = "examples/dpi/scripts/dpi_dup_testbench.rs"
+
+[[bin]]
+name = "dpi_counter_gpu_testbench"
+path = "examples/dpi/scripts/dpi_counter_gpu_testbench.rs"
+required-features = ["cuda"]
+
+[[bin]]
+name = "dpi_pipe_bench"
+path = "examples/dpi/scripts/dpi_pipe_bench.rs"
+required-features = ["cuda"]
+
+[[bin]]
+name = "dpi_output_param_testbench"
+path = "examples/dpi/scripts/dpi_output_param_testbench.rs"
+
+[[bin]]
+name = "dpi_alltypes_testbench"
+path = "examples/dpi/scripts/dpi_alltypes_testbench.rs"
+
+[[bin]]
+name = "dpi_const_input_testbench"
+path = "examples/dpi/scripts/dpi_const_input_testbench.rs"

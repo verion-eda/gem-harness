@@ -1,0 +1,36 @@
+[build-system]
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "harness"
+version = "0.1.0"
+description = "GPU-accelerated hardware simulator for AIG netlists"
+readme = "PYTHON_BINDINGS.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+
+[project.urls]
+Homepage = "https://github.com/verion-eda/gem-harness"
+Repository = "https://github.com/verion-eda/gem-harness"
+
+[tool.maturin]
+manifest-path = "crates/simulator/Cargo.toml"
+features = ["python", "cuda"]
+module-name = "harness"
+python-source = "python"
+
+[tool.basedpyright]
+pythonVersion = "3.12"
+typeCheckingMode = "basic"
+reportUnusedImport = true
+reportUnusedVariable = true
+reportDuplicateImport = true
+
+[tool.ty.rules]
+unresolved-import = "ignore"
+
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"

@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Verion GmbH
+# SPDX-License-Identifier: Apache-2.0
+import '../common.just'
+
+root      := justfile_directory() / "../.."
+build_dir := justfile_directory() / "build"
+# Override on the command line: just N=64 all
+N         := "32"
+gatelevel := build_dir + "/gatelevel_N" + N + ".gv"
+gemparts  := build_dir + "/result_N" + N + ".gemparts"
+
+default: all
+
+synth:
+    mkdir -p {{build_dir}}
+    yosys -c {{justfile_directory()}}/scripts/synthesize.tcl -- {{justfile_directory()}}/adder.sv {{gatelevel}} {{root}}/aigpdk {{N}}
+
+comp: (compile root gatelevel gemparts)
+
+sim: (run-testbench root "adders_parallel_testbench" "--gatelevel" gatelevel "--gemparts" gemparts)
+
+all: synth comp sim
+
+clean:
+    rm -rf {{build_dir}}

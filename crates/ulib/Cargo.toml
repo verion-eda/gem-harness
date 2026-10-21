@@ -1,0 +1,30 @@
+[package]
+name = "ulib"
+license = "Apache-2.0"
+version = "0.3.13"
+edition = "2024"
+description = "Universal data storage library for CPU/GPU heterogeneous applications"
+authors = ["Zizheng Guo <gzz_2000@126.com>"]
+links = "ulib"
+
+[lints]
+workspace = true
+
+[dependencies]
+tracing.workspace = true
+bytemuck = { version = "1.25.0", features = ["derive"] }
+cust = { version = "0.3.2", optional = true, features = ["bytemuck"] }
+cust_raw = { version = "0.11.3", optional = true }
+impl-tools = "0.10.0"
+lazy_static = "1.4.0"
+memory-stats = "1.1.0"
+rayon = { version = "1.7.0", optional = true }
+size = "0.4.1"
+ulib-derive = { version = "0.1.0", path = "ulib-derive" }
+
+[features]
+cuda = ["dep:cust", "dep:cust_raw", "ulib-derive/cuda"]
+rayon = ["dep:rayon"]
+
+[build-dependencies]
+ucc.workspace = true

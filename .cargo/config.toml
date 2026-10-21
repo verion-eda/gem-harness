@@ -1,0 +1,24 @@
+[alias]
+# `cargo d` — doc the pipeline crates without dep noise.
+# Omits `--features cuda`; pass it explicitly to surface the
+# simulator `ffi` and `py` modules and the gem-simulator binary.
+d = [
+    "doc",
+    "--no-deps",
+    "-p",
+    "simulator",
+    "-p",
+    "aig",
+    "-p",
+    "staging",
+    "-p",
+    "repcut",
+    "-p",
+    "flatten",
+    "-p",
+    "gem-cuda",
+    "-p",
+    "gem-simulator",
+    "-p",
+    "compile",
+]

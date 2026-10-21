@@ -1,0 +1,30 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Verion GmbH
+# SPDX-License-Identifier: Apache-2.0
+import '../common.just'
+
+root      := justfile_directory() / "../.."
+build_dir := justfile_directory() / "build"
+gatelevel := build_dir / "gatelevel.gv"
+gemparts  := build_dir / "result.gemparts"
+
+default: all
+
+# Generate input VCD using Verilator (needed for sim-gem only, not for the default testbench).
+gen-vcd:
+    cd {{justfile_directory()}} && verilator --cc --exe --build -j 0 -Wall --trace alu.sv scripts/generate_input_vcd.cpp
+    cd {{justfile_directory()}} && ./obj_dir/Valu
+    mkdir -p {{build_dir}}
+    mv {{justfile_directory()}}/input.vcd {{build_dir}}/input.vcd
+
+synth:
+    mkdir -p {{build_dir}}
+    cd {{root}} && yosys -p "tcl {{justfile_directory()}}/scripts/synthesise.tcl {{justfile_directory()}}/alu.sv {{gatelevel}} alu"
+
+comp: (compile root gatelevel gemparts)
+
+sim: (run-testbench root "alu_testbench")
+
+all: synth comp sim
+
+clean:
+    rm -rf {{build_dir}}

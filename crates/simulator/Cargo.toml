@@ -1,0 +1,39 @@
+[package]
+description = "Simulator ..."
+edition.workspace = true
+name = "simulator"
+license = "Apache-2.0"
+version = "0.0.1"
+
+[lints]
+workspace = true
+
+[dependencies]
+anyhow.workspace = true
+aig.workspace = true
+flatten.workspace = true
+gem-cuda.workspace = true
+netlistdb.workspace = true
+staging.workspace = true
+tracing.workspace = true
+ulib.workspace = true
+vcd-ng.workspace = true
+# other
+compact_str = "0.7.1"
+libloading = "0.8"
+indexmap = { version = "2.4.0", features = ["rayon"] }
+itertools = "0.10.3"
+pyo3 = { version = "0.20", features = ["extension-module"], optional = true }
+serde_bare = "0.5.0"
+
+[features]
+cuda = ["ulib/cuda", "gem-cuda/cuda"]
+# Use CUDA unified managed memory for the DPI pipe buffer instead of the
+# default pinned mapped memory. Unified memory is coherent on NVLink-C2C
+# (Grace Hopper) but not on PCIe, where the page migrates to device memory
+# and might be less performant.
+unified-memory = ["cuda"]
+python = ["pyo3"]
+
+[lib]
+crate-type = ["cdylib", "rlib"]

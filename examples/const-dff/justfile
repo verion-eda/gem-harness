@@ -1,0 +1,24 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Verion GmbH
+# SPDX-License-Identifier: Apache-2.0
+import '../common.just'
+
+root      := justfile_directory() / "../.."
+build_dir := justfile_directory() / "build"
+gatelevel := build_dir / "gatelevel.gv"
+gemparts  := build_dir / "result.gemparts"
+
+default: all
+
+# Must run from project root so synthesise.ys relative paths resolve correctly.
+synth:
+    mkdir -p {{build_dir}}
+    cd {{root}} && yosys examples/const-dff/synthesise.ys
+
+comp: (compile root gatelevel gemparts)
+
+sim: (run-testbench root "const_dff")
+
+all: synth comp sim
+
+clean:
+    rm -rf {{build_dir}}

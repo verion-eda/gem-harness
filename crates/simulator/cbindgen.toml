@@ -1,0 +1,20 @@
+language = "C"
+style = "both"
+cpp_compat = true
+
+header = """/**
+ * C-FFI bindings to gem-harness Simulator
+ */"""
+include_guard = "HARNESS_H"
+autogen_warning = "/* WARNING: auto-generated file - do not modify manually */"
+
+[defines]
+"feature = cuda" = "CUDA_ENABLED"
+
+[export]
+include = ["SimState", "SimResult", "OpaqueSimHandle"]
+
+[export.rename]
+"SimState" = "SimState"
+"SimResult" = "SimResult"
+"OpaqueSimHandle" = "OpaqueSimHandle"
